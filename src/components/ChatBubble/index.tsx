@@ -1,15 +1,21 @@
 import { ChatBubbleType } from "@/types/ChatBubbleType";
+import { useNavigate } from "react-router-dom";
 
 const ChatBubble = ({id, bubble_avatar: bubbleAvatar, bubble_name: bubbleName}: ChatBubbleType) => {
-    console.log(id);
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/chat/${id}`);
+    };
+
     return (
-        <div className="flex justify-start items-center gap-4 hover:bg-primary hover:text-primary-foreground p-2 cursor-pointer rounded-lg transition-colors">
-            <img src={bubbleAvatar} alt={bubbleName} className="w-16 rounded-full" />
+        <button onClick={handleClick} className="w-full flex justify-start items-center gap-4 hover:bg-primary hover:text-primary-foreground p-2 cursor-pointer rounded-lg transition-colors">
+            <img src={bubbleAvatar} alt={bubbleName} className="w-16 aspect-square rounded-full" />
             <div>
                 <h3>{bubbleName}</h3>
                 <small>{"something"}</small>
             </div>
-        </div>
+        </button>
     );
 };
 

@@ -6,6 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import AvoidManuallyNavigatedRoute from "./AvoidManuallyNavigatedRoute";
+import Chat from "./Chat";
 
 const router = createBrowserRouter([
     {
@@ -22,8 +23,8 @@ const router = createBrowserRouter([
                         element: <Home />,
                     },
                     {
-                        path: '/about',
-                        element: <h1>About</h1>,
+                        path: '/chat/:id',
+                        element: <Chat />,
                     },
                 ],
             },
