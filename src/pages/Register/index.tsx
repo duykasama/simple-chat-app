@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DatabaseSchemas, supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 import { useNavigate } from "react-router";
 import FormError from "@/components/FormError";

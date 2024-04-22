@@ -1,23 +1,51 @@
 import ChatMessage from "@/components/ChatMessage";
 import { Input } from "@/components/ui/input";
+import useChatBubbleService from "@/lib/services/chatBubbleService";
+import useChatMessageService from "@/lib/services/chatMessageService";
+import { ChatBubbleType } from "@/types/ChatBubbleType";
 import { ChatMessageType } from "@/types/ChatMessageType";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsImage } from "react-icons/bs";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 
 const Chat = () => {
     const params = useParams();
-    const messages: ChatMessageType[] = [];
+    const { getChatBubbleById } = useChatBubbleService();
+    const { getAllChatMessages, createNewChatMessage } = useChatMessageService();
+    const [chatBubble, setChatBubble] = useState<ChatBubbleType | null>(null);
+    const [messages, setMessages] = useState<ChatMessageType[] | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        console.log(params);
-    }, [params]);
+        const getChatBubbleAndFetchMessages = async () => {
+            const chatBubble = await getChatBubbleById(params.id as string);
+            setChatBubble(chatBubble);
+            const chatMessages = await getAllChatMessages(chatBubble?.reference_id as string);
+            setMessages(chatMessages);
+        };
+
+        getChatBubbleAndFetchMessages();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const handleSendMessage = async () => {
+        console.log(chatBubble);
+        const msg = inputRef.current?.value;
+        if (!msg) return;
+        await createNewChatMessage({
+            sender_id: chatBubble?.owner_id as string,
+            recipient_id: chatBubble?.reference_id as string,
+            content: msg,
+        });
+        inputRef.current.value = "";
+    };
+
+    const handleTypeMessage = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSendMessage();
 
     return (
         <section className="flex flex-col justify-end h-full p-4 gap-4">
             <ul className="flex flex-col gap-4">
-                {messages.map((message) => (
+                {messages?.map((message) => (
                     <li key={message.id}>
                         <ChatMessage {...message} />
                     </li>
@@ -27,8 +55,8 @@ const Chat = () => {
                 <div>
                     <BsImage size={24} className="cursor-pointer text-primary" />
                 </div>
-                <Input placeholder="Type your message here..." />
-                <RiSendPlaneFill size={24} className="cursor-pointer text-primary" />
+                <Input ref={inputRef} onKeyUp={handleTypeMessage} placeholder="Type your message here..." />
+                <RiSendPlaneFill onClick={handleSendMessage} size={24} className="cursor-pointer text-primary" />
             </div>
         </section>
     );

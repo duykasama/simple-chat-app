@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 
-function useFetch<T> (schema: string, fields: string) {
+function useFetch<T> (schema: string, fields: string, whereColumn?: string, whereValue?: string) {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
@@ -9,9 +9,17 @@ function useFetch<T> (schema: string, fields: string) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await supabase
-                    .from(schema)
-                    .select(fields);
+                let response;
+                if (whereColumn && whereValue) {
+                    response = await supabase
+                        .from(schema)
+                        .select(fields)
+                        .eq(whereColumn, whereValue);
+                } else {
+                    response = await supabase
+                        .from(schema)
+                        .select(fields);
+                }
                 const data = response.data;
                 setData(data as T);
             } catch (error) {
@@ -22,7 +30,7 @@ function useFetch<T> (schema: string, fields: string) {
         };
 
         fetchData();
-    }, [schema, fields]);
+    }, [schema, fields, whereColumn, whereValue]);
 
     return { data, loading, error };
 }
