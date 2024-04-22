@@ -5,10 +5,12 @@ import { Separator } from "@/components/ui/separator";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/lib/supabase";
+import { DatabaseSchemas, supabase } from "@/lib/supabase";
 import { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 import { useNavigate } from "react-router";
 import FormError from "@/components/FormError";
+import createNewChatUser from "@/lib/services/userService";
+import { ChatUserType } from "@/types/ChatUserType";
 
 const formSchema = z.object({
     email: z
@@ -43,9 +45,10 @@ const Register = () => {
             password: data.password,
         };
         const response = await supabase.auth.signUp(credentials);
-        if (response?.data) {
+        if (response.data && !response.error) {
+           createNewChatUser({ id: response.data?.user?.id || '', email: response.data?.user?.email || '' } as ChatUserType);
            navigate('/sign-in');
-        } else if (response?.error) {
+        } else if (response.error) {
             console.error(response.error);
         }
     };
