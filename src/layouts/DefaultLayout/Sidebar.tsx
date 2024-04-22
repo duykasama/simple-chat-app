@@ -2,7 +2,7 @@ import ChatBubble from "@/components/ChatBubble";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import useFetch from "@/hooks/useFetch";
-import { DatabaseSchemas } from "@/lib/supabase";
+import { DatabaseTables } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { ChatBubbleType } from "@/types/ChatBubbleType";
 
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const Sidebar = ({className}: Props) => {
-    const { data: chatBubbles } = useFetch<ChatBubbleType[]>(DatabaseSchemas.CHAT_BUBBLES, "*");
+    const { data: chatBubbles } = useFetch<ChatBubbleType[]>(DatabaseTables.CHAT_BUBBLES, "*");
 
     return (
         <div className={cn("p-2", className)}>

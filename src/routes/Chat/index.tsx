@@ -2,6 +2,7 @@ import ChatMessage from "@/components/ChatMessage";
 import { Input } from "@/components/ui/input";
 import useChatBubbleService from "@/lib/services/chatBubbleService";
 import useChatMessageService from "@/lib/services/chatMessageService";
+import { DatabaseTables, supabase } from "@/lib/supabase";
 import { ChatBubbleType } from "@/types/ChatBubbleType";
 import { ChatMessageType } from "@/types/ChatMessageType";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +17,17 @@ const Chat = () => {
     const [chatBubble, setChatBubble] = useState<ChatBubbleType | null>(null);
     const [messages, setMessages] = useState<ChatMessageType[] | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    supabase
+        .channel(`chat:${params.id}`)
+        .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: DatabaseTables.MESSAGES,
+        }, async () => {
+            const chatMessages = await getAllChatMessages(chatBubble?.reference_id as string);
+            setMessages(chatMessages);
+        })
+        .subscribe();
 
     useEffect(() => {
         const getChatBubbleAndFetchMessages = async () => {
@@ -29,7 +41,6 @@ const Chat = () => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleSendMessage = async () => {
-        console.log(chatBubble);
         const msg = inputRef.current?.value;
         if (!msg) return;
         await createNewChatMessage({

@@ -1,10 +1,10 @@
-import { DatabaseSchemas, supabase } from "../supabase";
+import { DatabaseTables, supabase } from "../supabase";
 import { ChatBubbleType } from "@/types/ChatBubbleType";
 
 const useChatBubbleService = () => {
     const getAllChatBubbles = async (): Promise<ChatBubbleType[]> => {
         const response = await supabase
-            .from(DatabaseSchemas.CHAT_BUBBLES)
+            .from(DatabaseTables.CHAT_BUBBLES)
             .select("*");
         if (response.data) {
             return response.data;
@@ -15,7 +15,7 @@ const useChatBubbleService = () => {
 
     const getChatBubbleById = async (id: string): Promise<ChatBubbleType | null> => {
         const response = await supabase
-            .from(DatabaseSchemas.CHAT_BUBBLES)
+            .from(DatabaseTables.CHAT_BUBBLES)
             .select("*")
             .eq("id", id);
         if (response.data) {

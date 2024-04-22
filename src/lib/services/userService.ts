@@ -1,9 +1,9 @@
 import { ChatUserType } from "@/types/ChatUserType";
-import { DatabaseSchemas, supabase } from "../supabase";
+import { DatabaseTables, supabase } from "../supabase";
 
 const createNewChatUser = async ({id, email, phone}: ChatUserType) => {
     const { data, error } = await supabase
-        .from(DatabaseSchemas.USERS)
+        .from(DatabaseTables.USERS)
         .insert([{ id, email, phone, user_name: email, user_avatar: ""}]);
     if (error) {
         console.error(error);
