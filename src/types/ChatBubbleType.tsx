@@ -1,6 +1,8 @@
 export type ChatBubbleType = {
     id: string;
-    lastMessage: string;
-    username: string;
-    avatar: string;
+    owner_id: string;
+    reference_id: string;
+    bubble_avatar: string;
+    bubble_name: string;
+    created_at: string;
 };

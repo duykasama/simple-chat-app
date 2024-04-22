@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { DatabaseSchemas, supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInWithPasswordCredentials } from "@supabase/supabase-js";
 import { useForm } from "react-hook-form";

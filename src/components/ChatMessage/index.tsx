@@ -2,7 +2,6 @@ import { formatTime } from "@/lib/utils";
 import { ChatMessageType } from "@/types/ChatMessageType";
 
 const ChatMessage = ({userId, userAvatar, content, createdAt}: ChatMessageType) => {
-    console.log(userId);
     const isMyMessage = userId === "2";
 
     return (

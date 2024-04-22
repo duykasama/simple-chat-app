@@ -1,6 +1,8 @@
 import ChatBubble from "@/components/ChatBubble";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import useFetch from "@/hooks/useFetch";
+import { DatabaseSchemas } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { ChatBubbleType } from "@/types/ChatBubbleType";
 
@@ -8,28 +10,15 @@ type Props = {
     className?: string;
 };
 
-const chatBubbles: ChatBubbleType[] = [
-    {
-        id: "1",
-        avatar: "https://i.pravatar.cc/300",
-        username: "John Doe",
-        lastMessage: "Hello, world!",
-    },
-    {
-        id: "2",
-        avatar: "https://i.pravatar.cc/300",
-        username: "John Doe",
-        lastMessage: "Hello, world!",
-    },
-];
-
 const Sidebar = ({className}: Props) => {
+    const { data: chatBubbles } = useFetch<ChatBubbleType[]>(DatabaseSchemas.CHAT_BUBBLES, "*");
+
     return (
         <div className={cn("p-2", className)}>
             <Input placeholder="Search..." />
             <Separator className="my-2" />
             <menu>
-                {chatBubbles.map((chatBubble) => (
+                {chatBubbles?.map((chatBubble: ChatBubbleType) => (
                     <li key={chatBubble.id}>
                         <ChatBubble {...chatBubble} />
                     </li>
