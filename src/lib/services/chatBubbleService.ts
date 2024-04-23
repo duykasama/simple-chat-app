@@ -13,6 +13,21 @@ const useChatBubbleService = () => {
         }
     };
 
+    const getMyChatBubbles = async (): Promise<ChatBubbleType[]> => {
+        const authObjectAsString = localStorage.getItem('sb-xlcvtbudygbiuzzagcoz-auth-token');
+        const authObject = JSON.parse(authObjectAsString as string);
+        const myId = authObject.user.id;
+        const response = await supabase
+            .from(DatabaseTables.CHAT_BUBBLES)
+            .select("*")
+            .eq("owner_id", myId);
+        if (response.data) {
+            return response.data;
+        } else {
+            return [];
+        }
+    };
+
     const getChatBubbleById = async (id: string): Promise<ChatBubbleType | null> => {
         const response = await supabase
             .from(DatabaseTables.CHAT_BUBBLES)
@@ -25,7 +40,7 @@ const useChatBubbleService = () => {
         }
     };
     
-    return { getAllChatBubbles, getChatBubbleById };
+    return { getAllChatBubbles, getMyChatBubbles, getChatBubbleById };
 };
 
 export default useChatBubbleService;
