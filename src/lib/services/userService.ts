@@ -11,4 +11,33 @@ const createNewChatUser = async ({id, email, phone}: ChatUserType) => {
     return data;
 };
 
-export default createNewChatUser;
+const getChatUserById = async (id: string) => {
+    const { data, error } = await supabase
+        .from(DatabaseTables.USERS)
+        .select("*")
+        .eq("id", id);
+    if (error) {
+        console.error(error);
+    }
+    return data;
+};
+
+const getChatUserByEmail = async (email: string) => {
+    const { data, error } = await supabase
+        .from(DatabaseTables.USERS)
+        .select("*")
+        .eq("email", email);
+    if (error) {
+        console.error(error);
+    }
+    return data;
+};
+
+const serviceName = "userService";
+
+export default serviceName;
+export {
+    createNewChatUser,
+    getChatUserById,
+    getChatUserByEmail
+};

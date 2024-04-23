@@ -1,6 +1,13 @@
-const FormError = ({ message }: { message: string }) => {
+import { cn } from "@/lib/utils";
+
+type Props = {
+    message: string;
+    className?: string;
+};
+
+const FormError = ({ message, className }: Props) => {
     return (
-        <small className="text-red-600">{message}</small>
+        <small className={cn("text-red-600", className)}>{message}</small>
     );
 }
 
