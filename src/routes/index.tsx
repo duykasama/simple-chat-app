@@ -7,7 +7,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import AvoidManuallyNavigatedRoute from "./AvoidManuallyNavigatedRoute";
 import Chat from "./Chat";
-import { AddFriend, FriendsList } from "./Friends";
+import { AddFriend, FriendRequests, FriendsList } from "./Friends";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +33,10 @@ const router = createBrowserRouter([
                     {
                         path: '/friends/new',
                         element: <AddFriend />,
+                    },
+                    {
+                        path: '/friends/requests',
+                        element: <FriendRequests />,
                     },
                 ],
             },

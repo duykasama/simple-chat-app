@@ -20,8 +20,9 @@ const Header = () => {
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Friends</NavigationMenuTrigger>
                         <NavigationMenuContent className="flex flex-col">
-                            <NavigationMenuLink onClick={() => navigate('/friends')} className="text-nowrap cursor-pointer hover:bg-primary hover:text-primary-foreground px-2 py-1 transition-colors">Friends List</NavigationMenuLink>
+                            <NavigationMenuLink onClick={() => navigate('/friends')} className="text-nowrap cursor-pointer hover:bg-primary hover:text-primary-foreground px-2 py-1 transition-colors">All Friends</NavigationMenuLink>
                             <NavigationMenuLink onClick={() => navigate('/friends/new')} className="text-nowrap cursor-pointer hover:bg-primary hover:text-primary-foreground px-2 py-1 transition-colors">Add New Friend</NavigationMenuLink>
+                            <NavigationMenuLink onClick={() => navigate('/friends/requests')} className="text-nowrap cursor-pointer hover:bg-primary hover:text-primary-foreground px-2 py-1 transition-colors">Friend Requests</NavigationMenuLink>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                 </NavigationMenuList>

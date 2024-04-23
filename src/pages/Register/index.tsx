@@ -9,8 +9,8 @@ import { supabase } from "@/lib/supabase";
 import { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 import { useNavigate } from "react-router";
 import FormError from "@/components/FormError";
-import createNewChatUser from "@/lib/services/userService";
 import { ChatUserType } from "@/types/ChatUserType";
+import { createNewChatUser } from "@/lib/services/userService";
 
 const formSchema = z.object({
     email: z
