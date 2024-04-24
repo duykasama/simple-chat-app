@@ -1,5 +1,7 @@
 import FriendRequestStatus from "@/constants/friendRequestStatus";
 import { DatabaseTables, supabase } from "../supabase";
+import FriendshipType from "@/types/Friendship";
+import { ChatUserType } from "@/types/ChatUserType";
 
 const sendFriendRequest = async (sender_id: string, recipient_id: string) => {
     try {
@@ -34,12 +36,36 @@ const getAllMyFriendRequests = async () => {
 
 const acceptFriendRequest = async (id: string) => {
     try {
-        await supabase
+        const { data } = await supabase
             .from(DatabaseTables.FRIENDSHIP)
             .update({
                 status: FriendRequestStatus.ACCEPTED,
             })
-            .eq("id", id);
+            .eq("id", id)
+            .select("*");
+        const friendship = (data as FriendshipType[])[0];
+        const { data: userResponse } = await supabase
+            .from(DatabaseTables.USERS)
+            .select("id,user_avatar,user_name")
+            .or(`id.eq.${friendship.sender_id},id.eq.${friendship.recipient_id}`);
+        const users = (userResponse as unknown) as ChatUserType[];
+        console.log(users);
+        await supabase
+            .from(DatabaseTables.CHAT_BUBBLES)
+            .insert([
+                {
+                    owner_id: users[0].id,
+                    reference_id: users[1].id,
+                    bubble_avatar: users[1].user_avatar,
+                    bubble_name: users[1].user_name,
+                },
+                {
+                    owner_id: users[1].id,
+                    reference_id: users[0].id,
+                    bubble_avatar: users[0].user_avatar,
+                    bubble_name: users[0].user_name,
+                },
+            ]);
     } catch (error) {
         alert(error);
     }
